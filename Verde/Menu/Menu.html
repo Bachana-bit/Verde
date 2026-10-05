@@ -1,0 +1,220 @@
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Menu | Verde Restaurant</title>
+<meta name="description" content="Explore Verde Restaurant's full menu — starters, main courses, pasta, seafood, desserts, drinks and wines.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<link rel="stylesheet" href="Menu.css">
+</head>
+<body>
+
+
+<svg  style="display:none;">
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 21c7 0 13-5 13-14 0-1 0-2-.2-3C10 4.5 5 8 4 15c-.3 2-.2 4 1 6z"/><path d="M5 21c2-5 5-9 10-12"/></symbol>
+  <symbol id="i-chef" viewBox="0 0 24 24"><path d="M7 21h10"/><path d="M8 21v-4.5"/><path d="M16 21v-4.5"/><path d="M6.5 16.5h11c.4-1.7.5-3.6-1-4.8.7-2.6-1.1-5.2-3.8-5.2-.5 0-1 .1-1.4.3C10.7 5.5 9.5 5 8.3 5 5.9 5 4 6.9 4 9.3c0 .5.1 1 .3 1.4C3 11.6 2.5 13 2.9 14.4c.3 1 1 1.8 1.9 2.1z"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.5s-7.2-4.4-9.8-9C.6 8 2 4.3 6 3.8c2.1-.2 3.7.9 4.3 2.5.6-1.6 2.2-2.7 4.3-2.5 4 .5 5.4 4.2 3.8 7.7-2.6 4.6-9.8 9-9.8 9z"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 22s7.5-7.8 7.5-13.5a7.5 7.5 0 1 0-15 0C4.5 14.2 12 22 12 22z"/><circle cx="12" cy="8.5" r="2.7"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.2"/><rect x="13" y="3" width="8" height="8" rx="1.2"/><rect x="3" y="13" width="8" height="8" rx="1.2"/><rect x="13" y="13" width="8" height="8" rx="1.2"/></symbol>
+  <symbol id="i-bowl" viewBox="0 0 24 24"><path d="M3 11h18a9 9 0 0 1-18 0z"/><path d="M8 11V9a4 4 0 0 1 8 0v2"/></symbol>
+  <symbol id="i-cloche" viewBox="0 0 24 24"><path d="M4 15a8 8 0 0 1 16 0"/><line x1="2" y1="15" x2="22" y2="15"/><line x1="12" y1="5" x2="12" y2="3"/></symbol>
+  <symbol id="i-salad" viewBox="0 0 24 24"><path d="M3 12h18a9 9 0 0 1-18 0z"/><path d="M12 12c-2-3-1-6 2-7-1 3 0 5 2 7"/></symbol>
+  <symbol id="i-noodles" viewBox="0 0 24 24"><path d="M3 12h18a9 9 0 0 1-18 0z"/><path d="M8 9c1-1 2-1 3 0s2 1 3 0"/></symbol>
+  <symbol id="i-fish" viewBox="0 0 24 24"><path d="M3 12c3-4 8-6 13-4 2 .8 4 2.4 5 4-1 1.6-3 3.2-5 4-5 2-10 0-13-4z"/><circle cx="16" cy="10.5" r=".8" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-cupcake" viewBox="0 0 24 24"><path d="M6 10h12l-1.5 9a2 2 0 0 1-2 1.7H9.5a2 2 0 0 1-2-1.7L6 10z"/><path d="M7 10a5 5 0 0 1 10 0"/><path d="M12 2v3"/></symbol>
+  <symbol id="i-wine-glass" viewBox="0 0 24 24"><path d="M7 3h10l-1 6a4 4 0 0 1-8 0L7 3z"/><line x1="12" y1="13" x2="12" y2="20"/><line x1="8" y1="21" x2="16" y2="21"/></symbol>
+  <symbol id="i-wine-bottle" viewBox="0 0 24 24"><path d="M10 2h4v3l1.5 2.5v11a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2V7.5L10 5V2z"/><line x1="9" y1="12" x2="15" y2="12"/></symbol>
+</svg>
+
+ <header class="header">
+        <div class="header__inner container">
+            <a href="../MainPage.html" class="logo">
+                <span class="logo__group">
+                    <span class="logo__text">Verde <svg class="icon">
+                            <use href="#i-leaf" />
+                        </svg></span>
+                    <span class="logo__sub">RESTAURANT</span>
+                </span>
+            </a>
+
+            <input type="checkbox" id="menu-toggle" class="menu-toggle">
+
+            <nav class="nav">
+                <ul class="nav__list">
+                    <li><a href="../MainPage.html" class="nav__link">Home</a></li>
+                    <li><a href="#" class="nav__link is-active">Menu</a></li>
+                    <li><a href="#footer" class="nav__link">About Us</a></li>
+                    <li><a href="../Gallery/Gallery.html" class="nav__link">Gallery</a></li>
+                    <li><a href="../Events.html" class="nav__link">Events</a></li>
+                    <li><a href="#footer" class="nav__link">Contact</a></li>
+                </ul>
+            </nav>
+            <label for="menu-toggle" class="nav-overlay"></label>
+
+            <div class="header__actions">
+                <a href="#" class="btn btn--gold reserve-desktop">Reserve a Table</a>
+                <label for="menu-toggle" class="hamburger"><span></span><span></span><span></span></label>
+            </div>
+        </div>
+    </header>
+
+<main>
+
+
+  <section class="page-hero">
+    <div class="page-hero__inner">
+      <div class="page-hero__content">
+        <h1>Our Menu</h1>
+        <span class="page-hero__divider"><svg class="icon"><use href="#i-leaf"/></svg></span>
+        <p>Explore a variety of carefully crafted dishes made with the freshest ingredients and a passion for great taste.</p>
+      </div>
+      <div class="page-hero__visual">
+        <img src="https://images.unsplash.com/photo-1432139509613-5c4255815697?q=80&amp;w=1200&amp;auto=format&amp;fit=crop" alt="Signature grilled dish at Verde Restaurant" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ MENU LAYOUT ============================================ -->
+  <section class="menu-section-wrap">
+    <div class="container menu-layout">
+
+      <!-- ---------- sidebar ---------- -->
+      <aside class="menu-sidebar">
+        <ul class="category-list" id="categoryList">
+          <!-- Categories are generated by Menu.js from the live API data -->
+        </ul>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="promo-card">
+          <div class="promo-card__media">
+            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&amp;w=600&amp;auto=format&amp;fit=crop" alt="Elegant table set for a special occasion" loading="lazy">
+          </div>
+          <h4>Special Occasion?</h4>
+          <p>Let us make your moments even more special.</p>
+          <a href="#" class="promo-card__link">Book a Table <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </aside>
+
+      <!-- ---------- main dish list ---------- -->
+      <div class="menu-main">
+        <div class="menu-main__head">
+          <h2 id="menuTitle">All Dishes</h2>
+          <div class="filter-by">
+            <span>Filter by:</span>
+            <span class="filter-by__select">Featured <i class="fa-solid fa-chevron-down"></i></span>
+          </div>
+        </div>
+
+        <div class="menu-groups" id="menuGroups">
+          <!-- Dish groups are generated by Menu.js from the live API data -->
+        </div>
+
+        <div class="load-more-wrap" id="loadMoreWrap">
+          <button type="button" class="btn btn--outline-dark">Load More <i class="fa-solid fa-chevron-down"></i></button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================ DAILY SPECIALS ============================================ -->
+  <section class="daily-specials">
+    <div class="container daily-specials__inner">
+      <div class="daily-specials__text">
+        <span class="eyebrow">Don't Miss Out</span>
+        <h2>Daily Specials</h2>
+        <p>Discover our chef's special creations made for today only.</p>
+        <a href="#" class="btn btn--gold">See Today's Specials <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+      <div class="mini-features">
+        <div class="mini-feature">
+          <span class="mini-feature__icon"><svg class="icon"><use href="#i-leaf"/></svg></span>
+          <h4>Fresh Ingredients</h4>
+          <p>We use only the freshest and highest quality ingredients.</p>
+        </div>
+        <div class="mini-feature">
+          <span class="mini-feature__icon"><svg class="icon"><use href="#i-chef"/></svg></span>
+          <h4>Expert Chefs</h4>
+          <p>Our chefs bring years of experience and passion to every plate.</p>
+        </div>
+        <div class="mini-feature">
+          <span class="mini-feature__icon"><svg class="icon"><use href="#i-heart"/></svg></span>
+          <h4>Made with Love</h4>
+          <p>Every meal is carefully prepared with love and attention to detail.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================ FOOTER ============================================ -->
+<footer class="footer" id="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__about">
+                    <span class="logo__text">Verde <svg class="icon">
+                            <use href="#i-leaf" />
+                        </svg></span>
+                    <span class="logo__sub">RESTAURANT</span>
+                    <p>Good food. Great moments.<br>Unforgettable experiences.</p>
+                    <div class="socials">
+                        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" aria-label="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer__links-col">
+                    <h5>Quick Links</h5>
+                    <ul class="footer__links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Menu</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Gallery</a></li>
+                        <li><a href="#">Events</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__hours">
+                    <h5>Hours</h5>
+                    <ul class="hours-list">
+                        <li><span>Mon &ndash; Thu</span><span>11:00 &ndash; 23:00</span></li>
+                        <li><span>Fri &ndash; Sat</span><span>11:00 &ndash; 00:00</span></li>
+                        <li><span>Sunday</span><span>11:00 &ndash; 22:00</span></li>
+                    </ul>
+                </div>
+
+                <div class="newsletter">
+                    <h5>Newsletter</h5>
+                    <p>Subscribe to get special offers and the latest updates.</p>
+                    <form class="newsletter__form" action="#" onsubmit="return false;">
+                        <input type="email" placeholder="Your email address" required>
+                        <button type="submit" aria-label="Subscribe"><i class="fa-solid fa-arrow-right"></i></button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="footer__bottom">
+                <span>&copy; 2024 Verde Restaurant. All Rights Reserved.</span>
+                <div class="footer__bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms &amp; Conditions</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+<script src="Menu.js" defer></script>
+</body>
+</html> 

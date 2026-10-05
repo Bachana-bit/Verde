@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verde Restaurant — Reserve a Table</title>
+<meta name="description" content="Reserve your table at Verde Restaurant — fresh ingredients, a cozy atmosphere, and memorable moments.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Jost:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&display=swap" rel="stylesheet">
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --dark:#100e0c;
+    --dark-2:#181410;
+    --gold:#c9a25f;
+    --gold-deep:#b0854a;
+    --gold-pale:#e7cd97;
+    --cream:#f7f1e6;
+    --white:#ffffff;
+    --ink:#211d18;
+    --ink-soft:#6f6860;
+    --line:#e6ddcc;
+    --fog:#bab29f;
+    --fog-soft:#9a9187;
+
+    --font-serif:'Playfair Display', Georgia, 'Times New Roman', serif;
+    --font-sans:'Jost', 'Century Gothic', 'Segoe UI', Avenir, sans-serif;
+    --font-script:'Alex Brush', 'Segoe Script', 'Brush Script MT', cursive;
+
+    --container:1240px;
+  }
+
+  /* ============ RESET / BASE ============ */
+  *,*::before,*::after{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:var(--font-sans);
+    color:var(--ink);
+    background:var(--white);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+  img{max-width:100%;display:block;}
+  a{text-decoration:none;color:inherit;}
+  ul{list-style:none;margin:0;padding:0;}
+  button{font-family:inherit;cursor:pointer;background:none;border:none;}
+  input,textarea,select{font-family:inherit;font-size:inherit;color:inherit;}
+  h1,h2,h3,p{margin:0;}
+
+  .container{
+    max-width:var(--container);
+    margin:0 auto;
+    padding:0 40px;
+  }
+
+  .skip-link{
+    position:absolute;left:16px;top:-60px;
+    background:var(--gold);color:#1c1712;
+    padding:10px 16px;border-radius:6px;
+    font-size:14px;font-weight:600;
+    transition:top .2s ease;
+    z-index:100;
+  }
+  .skip-link:focus{top:16px;}
+
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{
+    outline:2px solid var(--gold);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:.01ms !important;transition-duration:.01ms !important;}
+  }
+
+  /* icon sprite host — never rendered directly, only referenced via <use> */
+  .icon-sprite{position:absolute;width:0;height:0;overflow:hidden;}
+  .icon{
+    width:20px;height:20px;flex-shrink:0;
+    fill:none;stroke:currentColor;
+    stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;
+  }
+
+  /* ============ SHARED ELEMENTS ============ */
+  .eyebrow{
+    display:block;
+    font-size:13px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:600;
+    margin:0 0 18px;
+  }
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    padding:16px 30px;
+    background:var(--gold);
+    color:#1c1712;
+    font-size:15px;font-weight:500;
+    border-radius:8px;
+    white-space:nowrap;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .btn .icon{width:16px;height:16px;stroke-width:2;}
+  .btn:hover{background:var(--gold-deep);}
+  .btn:active{transform:translateY(1px);}
+  .btn-block{width:100%;}
+  .btn-ghost{
+    background:transparent;color:var(--white);
+    border:1px solid rgba(255,255,255,.35);
+  }
+  .btn-ghost:hover{background:rgba(255,255,255,.08);}
+
+  /* ============ HEADER ============ */
+  .site-header{
+    position:relative;
+    z-index:30;
+    padding:30px 0;
+    background:var(--dark);
+  }
+  .header-inner{
+    display:flex;align-items:center;justify-content:space-between;gap:24px;
+  }
+  .logo{
+    display:inline-flex;align-items:flex-start;gap:5px;
+    line-height:1;
+  }
+  .logo-text{
+    display:flex;flex-direction:column;
+  }
+  .logo-word{
+    display:inline-flex;align-items:center;gap:5px;
+    font-family:var(--font-serif);
+    font-style:italic;
+    font-weight:600;
+    font-size:27px;
+    color:var(--white);
+  }
+  .logo-leaf{width:15px;height:15px;color:var(--gold);stroke-width:1.8;}
+  .logo-sub{
+    font-family:var(--font-sans);
+    font-size:9px;
+    letter-spacing:.32em;
+    color:var(--fog);
+    margin-top:3px;
+    text-transform:uppercase;
+  }
+
+  .main-nav ul{display:flex;align-items:center;gap:38px;}
+  .main-nav a{
+    position:relative;
+    font-size:15px;
+    color:var(--white);
+    padding-bottom:8px;
+    transition:color .2s ease;
+  }
+  .main-nav a:hover{color:var(--gold-pale);}
+  .main-nav a.active{color:var(--gold);}
+  .main-nav a.active::after{
+    content:'';
+    position:absolute;left:0;right:0;bottom:0;
+    height:2px;background:var(--gold);
+  }
+
+  .header-cta{display:flex;align-items:center;gap:18px;}
+
+  .nav-toggle{
+    display:none;
+    width:42px;height:42px;
+    align-items:center;justify-content:center;
+    color:var(--white);
+  }
+  .nav-toggle .icon{width:24px;height:24px;}
+
+  /* ============ MOBILE NAV ============ */
+  .mobile-nav-backdrop{
+    position:fixed;inset:0;background:rgba(0,0,0,0);
+    z-index:45;opacity:0;visibility:hidden;
+    transition:opacity .3s ease, background .3s ease, visibility .3s ease;
+  }
+  .mobile-nav-backdrop.is-open{opacity:1;visibility:visible;background:rgba(9,8,7,.6);}
+
+  .mobile-nav{
+    position:fixed;top:0;right:0;bottom:0;
+    width:min(340px,86vw);
+    background:var(--dark);
+    z-index:50;
+    padding:26px 28px 32px;
+    display:flex;flex-direction:column;
+    box-shadow:-24px 0 60px rgba(0,0,0,.45);
+    transform:translateX(100%);
+    visibility:hidden;
+    transition:transform .35s ease, visibility .35s ease;
+  }
+  .mobile-nav.is-open{transform:translateX(0);visibility:visible;}
+  .mobile-nav-top{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:36px;
+  }
+  .nav-close{width:38px;height:38px;display:flex;align-items:center;justify-content:center;color:var(--fog);}
+  .nav-close .icon{width:22px;height:22px;}
+  .mobile-nav ul{display:flex;flex-direction:column;gap:24px;margin-bottom:34px;}
+  .mobile-nav ul a{font-size:18px;color:var(--white);}
+  .mobile-nav ul a.active{color:var(--gold);}
+
+  /* ============ HERO ============ */
+  .hero{
+    position:relative;
+    background:var(--dark);
+    overflow:hidden;
+  }
+  .hero-media{position:absolute;inset:0;z-index:0;}
+  .hero-media .photo{
+    position:absolute;inset:0;
+    background-image:url('https://images.unsplash.com/photo-1533222009245-969f0b87532b?q=80&w=1600&auto=format&fit=crop');
+    background-size:cover;
+    background-position:center 40%;
+  }
+  .hero-media .tint{
+    position:absolute;inset:0;
+    background:radial-gradient(120% 100% at 88% 45%, rgba(30,20,8,.3), transparent 62%);
+  }
+  .hero-media .fade{
+    position:absolute;inset:0;
+    background:linear-gradient(90deg, var(--dark) 0%, var(--dark) 18%, rgba(16,14,12,.82) 38%, rgba(16,14,12,.42) 57%, rgba(16,14,12,.1) 76%, transparent 94%);
+  }
+  .hero-inner{
+    position:relative;z-index:2;
+    display:grid;
+    grid-template-columns:minmax(0,560px) 1fr;
+    align-items:center;
+    min-height:600px;
+    padding:34px 0 96px;
+  }
+  .hero-content h1{
+    font-family:var(--font-serif);
+    font-weight:600;
+    font-size:clamp(34px,4.6vw,58px);
+    line-height:1.16;
+    color:var(--white);
+    margin-bottom:26px;
+  }
+  .hero-content p{
+    font-size:16px;line-height:1.75;
+    color:var(--fog);
+    max-width:440px;
+    margin-bottom:36px;
+  }
+
+  /* ============ BOOKING ============ */
+  .booking{background:var(--cream);padding:112px 0;}
+  .booking-inner{
+    display:grid;
+    grid-template-columns:1fr 1.08fr;
+    gap:76px;
+    align-items:start;
+  }
+  .booking-info h2{
+    font-family:var(--font-serif);
+    font-weight:600;
+    font-size:clamp(30px,3.4vw,42px);
+    color:var(--ink);
+    margin-bottom:18px;
+  }
+  .booking-info > p{
+    font-size:15.5px;line-height:1.75;
+    color:var(--ink-soft);
+    max-width:420px;
+    margin-bottom:40px;
+  }
+  .feature-list{display:flex;flex-direction:column;gap:28px;margin-bottom:44px;}
+  .feature-list li{display:flex;align-items:flex-start;gap:22px;}
+  .icon-circle{
+    width:66px;height:66px;flex-shrink:0;
+    border:1.5px solid var(--gold);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--gold);
+  }
+  .icon-circle .icon{width:26px;height:26px;stroke-width:1.5;}
+  .feature-copy h3{
+    font-family:var(--font-serif);
+    font-size:19px;font-weight:600;
+    color:var(--ink);
+    margin-bottom:6px;
+  }
+  .feature-copy p{
+    font-size:14.5px;line-height:1.6;
+    color:var(--ink-soft);
+  }
+  .script-tagline{
+    display:inline-block;
+    font-family:var(--font-script);
+    font-size:30px;
+    color:var(--gold-deep);
+    position:relative;
+    padding-bottom:14px;
+  }
+  .script-tagline svg{
+    position:absolute;left:0;bottom:0;width:150px;height:14px;
+    stroke:var(--gold);stroke-width:2;fill:none;stroke-linecap:round;
+  }
+
+  /* ---- form card ---- */
+  .booking-form{
+    background:var(--white);
+    border-radius:20px;
+    padding:44px;
+    box-shadow:0 24px 60px rgba(40,30,15,.10);
+  }
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  .field{margin-bottom:22px;}
+  .field label{
+    display:flex;align-items:center;gap:8px;
+    font-size:14px;font-weight:500;color:var(--ink);
+    margin-bottom:9px;
+  }
+  .field label .icon{width:15px;height:15px;color:var(--ink-soft);}
+  .field label .optional{
+    font-weight:400;color:var(--fog-soft);
+  }
+  .field-control{
+    position:relative;
+    display:flex;align-items:center;gap:12px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px 16px;
+    transition:border-color .2s ease;
+  }
+  .field-control.is-filled{border-color:var(--gold);}
+  .field-control:focus-within{border-color:var(--gold);}
+  .field-icon{width:18px;height:18px;color:var(--gold);}
+  .field-text{
+    flex:1;min-width:0;
+    border:none;background:none;outline:none;
+    font-size:15px;color:var(--ink);
+  }
+  .field-text::placeholder{color:var(--fog-soft);}
+  .field-chevron{width:15px;height:15px;color:var(--ink-soft);}
+  .field-hidden{
+    position:absolute;inset:0;
+    width:100%;height:100%;
+    opacity:0;border:none;padding:0;margin:0;
+    cursor:pointer;
+  }
+  select.field-text{
+    appearance:none;-webkit-appearance:none;-moz-appearance:none;
+    cursor:pointer;
+    padding-right:6px;
+  }
+  textarea.field-text{resize:vertical;min-height:88px;line-height:1.6;padding-top:2px;}
+  .field-control.align-top{align-items:flex-start;}
+  .field-control.align-top .field-icon{margin-top:2px;}
+
+  .form-note{
+    margin-top:-6px;margin-bottom:20px;
+    font-size:13.5px;color:var(--gold-deep);
+    background:rgba(201,162,95,.12);
+    border-radius:8px;padding:10px 14px;
+  }
+
+  /* ============ OCCASION ============ */
+  .occasion{
+    position:relative;
+    background:var(--dark);
+    overflow:hidden;
+    padding:110px 0 90px;
+  }
+  .occasion-media{position:absolute;inset:0;z-index:0;}
+  .occasion-media .photo{
+    position:absolute;inset:0;
+    background-image:url('https://images.unsplash.com/photo-1675965218658-bd6f516742ac?q=80&w=1600&auto=format&fit=crop');
+    background-size:cover;
+    background-position:center 55%;
+  }
+  .occasion-media .tint{
+    position:absolute;inset:0;
+    background:radial-gradient(90% 90% at 78% 25%, rgba(40,28,10,.4), transparent 60%);
+  }
+  .occasion-media .fade{
+    position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(12,10,8,.55) 0%, rgba(12,10,8,.82) 100%);
+  }
+  .occasion-inner{position:relative;z-index:1;}
+  .occasion-head{max-width:620px;}
+  .occasion-head h2{
+    font-family:var(--font-serif);
+    font-weight:600;
+    font-size:clamp(30px,3.6vw,44px);
+    color:var(--white);
+    margin-bottom:18px;
+  }
+  .occasion-head p{
+    font-size:15.5px;line-height:1.75;
+    color:var(--fog);
+  }
+  .occasion-features{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    margin-top:58px;padding-top:54px;
+    border-top:1px solid rgba(255,255,255,.14);
+  }
+  .occasion-features li{
+    text-align:center;
+    padding:0 26px;
+  }
+  .occasion-features li:not(:first-child){border-left:1px solid rgba(255,255,255,.14);}
+  .occasion-features li:first-child{padding-left:0;}
+  .occasion-features li:last-child{padding-right:0;}
+  .occasion-features .icon-circle{
+    margin:0 auto 20px;
+    border-color:var(--gold);
+  }
+  .occasion-features h3{
+    font-family:var(--font-serif);
+    font-size:17px;font-weight:600;
+    color:var(--white);
+    margin-bottom:8px;
+  }
+  .occasion-features p{
+    font-size:13.5px;line-height:1.6;
+    color:var(--fog);
+  }
+
+  /* ============ FOOTER ============ */
+  .site-footer{background:var(--dark);padding-top:84px;}
+  .footer-inner{
+    display:grid;
+    grid-template-columns:1.3fr 1fr 1fr 1.2fr;
+    gap:40px;
+    padding-bottom:64px;
+  }
+  .footer-brand .logo-word{font-size:25px;}
+  .footer-brand p{
+    font-size:14px;line-height:1.7;color:var(--fog);
+    margin:18px 0 22px;max-width:260px;
+  }
+  .socials{display:flex;gap:12px;}
+  .social-link{
+    width:38px;height:38px;border-radius:50%;
+    border:1px solid rgba(255,255,255,.25);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--fog);
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .social-link:hover{border-color:var(--gold);color:var(--gold);}
+  .social-link .icon{width:16px;height:16px;}
+
+  .footer-col h4{
+    font-family:var(--font-sans);
+    font-size:16px;font-weight:600;color:var(--white);
+    margin-bottom:22px;
+  }
+  .footer-col ul{display:flex;flex-direction:column;gap:13px;}
+  .footer-col a{font-size:14px;color:var(--fog);transition:color .2s ease;}
+  .footer-col a:hover{color:var(--gold);}
+  .hours-row{display:flex;justify-content:space-between;gap:12px;font-size:14px;color:var(--fog);}
+  .hours-row span:last-child{color:var(--fog-soft);}
+
+  .newsletter p{font-size:14px;line-height:1.7;color:var(--fog);margin-bottom:18px;}
+  .newsletter-form{
+    display:flex;align-items:center;
+    border:1px solid rgba(255,255,255,.25);
+    border-radius:8px;overflow:hidden;
+    padding-left:14px;
+  }
+  .newsletter-form input{
+    flex:1;min-width:0;border:none;background:none;outline:none;
+    color:var(--white);font-size:14px;padding:13px 8px 13px 0;
+  }
+  .newsletter-form input::placeholder{color:var(--fog-soft);}
+  .newsletter-form button{
+    width:44px;height:44px;flex-shrink:0;
+    background:var(--gold);color:#1c1712;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .2s ease;
+  }
+  .newsletter-form button:hover{background:var(--gold-deep);}
+  .newsletter-form button .icon{width:16px;height:16px;stroke-width:2;}
+  .newsletter .form-note{background:transparent;padding:0;margin-top:12px;color:var(--gold-pale);}
+
+  .footer-bottom{border-top:1px solid rgba(255,255,255,.12);}
+  .footer-bottom-inner{
+    display:flex;align-items:center;justify-content:space-between;
+    flex-wrap:wrap;gap:12px;
+    padding:24px 0;
+    font-size:13px;color:var(--fog-soft);
+  }
+  .footer-links{display:flex;gap:26px;}
+  .footer-links a:hover{color:var(--gold);}
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width:1080px){
+    :root{--container:100%;}
+    .container{padding:0 28px;}
+    .booking-inner{gap:52px;}
+    .footer-inner{grid-template-columns:1fr 1fr;row-gap:44px;}
+  }
+
+  @media (max-width:940px){
+    .main-nav,.header-cta .btn{display:none;}
+    .nav-toggle{display:flex;}
+    .hero-inner{grid-template-columns:1fr;min-height:0;padding:10px 0 76px;}
+    .hero-content p{max-width:none;}
+    .hero-media .fade{background:linear-gradient(180deg, rgba(16,14,12,.5) 0%, var(--dark) 82%);}
+    .hero-media .photo{background-position:center 30%;}
+    .booking-inner{grid-template-columns:1fr;}
+    .booking-form{padding:32px;}
+    .occasion-features{grid-template-columns:1fr 1fr;row-gap:40px;}
+    .occasion-features li:nth-child(3){border-left:1px solid rgba(255,255,255,.14);padding-left:26px;}
+    .occasion-features li:nth-child(odd){padding-left:0;}
+    .occasion-features li:nth-child(even){padding-right:0;}
+    .occasion-features li:nth-child(3),.occasion-features li:nth-child(4){border-top:1px solid rgba(255,255,255,.14);padding-top:36px;}
+  }
+
+  @media (max-width:620px){
+    .container{padding:0 20px;}
+    .site-header{padding:22px 0;}
+    .booking,.occasion{padding:76px 0;}
+    .site-footer{padding-top:60px;}
+    .form-row{grid-template-columns:1fr;gap:0;}
+    .footer-inner{grid-template-columns:1fr;gap:36px;}
+    .footer-brand p{max-width:none;}
+    .occasion-features{grid-template-columns:1fr;}
+    .occasion-features li{border-left:none !important;border-top:1px solid rgba(255,255,255,.14);padding:32px 0 0 !important;}
+    .occasion-features li:first-child{border-top:none;padding-top:0 !important;}
+    .footer-bottom-inner{flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ============ ICON SPRITE ============ -->
+<svg class="icon-sprite" aria-hidden="true" focusable="false">
+<defs>
+  <symbol id="icon-leaf" viewBox="0 0 24 24"><path d="M4 20c8 0 14-6 14-14V4h-2C8 4 4 10 4 18v2z"/><path d="M4 20c2.5-5.5 6.5-9.5 12.5-11.5"/></symbol>
+  <symbol id="icon-calendar" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="17" rx="2.5"/><line x1="16" y1="2.5" x2="16" y2="6.5"/><line x1="8" y1="2.5" x2="8" y2="6.5"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
+  <symbol id="icon-calendar-check" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="17" rx="2.5"/><line x1="16" y1="2.5" x2="16" y2="6.5"/><line x1="8" y1="2.5" x2="8" y2="6.5"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="8 15 10.8 17.8 16 13"/></symbol>
+  <symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12.3 15.5 14.3"/></symbol>
+  <symbol id="icon-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="icon-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="icon-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.1 9.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="icon-message" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></symbol>
+  <symbol id="icon-chevron-down" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></symbol>
+  <symbol id="icon-arrow-right" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+  <symbol id="icon-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></symbol>
+  <symbol id="icon-cloche" viewBox="0 0 24 24"><line x1="3" y1="17.5" x2="21" y2="17.5"/><path d="M5 17.5a7 7 0 0 1 14 0"/><line x1="12" y1="4" x2="12" y2="6.3"/><circle cx="12" cy="3" r="1"/></symbol>
+  <symbol id="icon-wine" viewBox="0 0 24 24"><path d="M8 3h8l-1.1 7.3a3 3 0 0 1-5.8 0L8 3z"/><line x1="12" y1="13.2" x2="12" y2="20"/><line x1="8.3" y1="20" x2="15.7" y2="20"/></symbol>
+  <symbol id="icon-fork-knife" viewBox="0 0 24 24"><path d="M6.5 3v6a1.8 1.8 0 0 0 3.6 0V3"/><line x1="8.3" y1="9.8" x2="8.3" y2="21"/><path d="M16.2 3c-1.7 1.8-1.7 5.3 0 7.1v10.9"/></symbol>
+  <symbol id="icon-menu" viewBox="0 0 24 24"><line x1="3" y1="6.5" x2="21" y2="6.5"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17.5" x2="21" y2="17.5"/></symbol>
+  <symbol id="icon-close" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  <symbol id="icon-instagram" viewBox="0 0 24 24"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.4" cy="6.6" r=".9" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="icon-facebook" viewBox="0 0 24 24"><path d="M14.5 21v-8h2.7l.4-3.4h-3.1V7.4c0-1 .3-1.6 1.7-1.6h1.5V2.8c-.3 0-1.2-.1-2.2-.1-2.3 0-3.8 1.4-3.8 3.9v2h-2.6v3.4h2.6v8h2.8z"/></symbol>
+  <symbol id="icon-x" viewBox="0 0 24 24"><line x1="4.5" y1="4.5" x2="19.5" y2="19.5"/><line x1="19.5" y1="4.5" x2="4.5" y2="19.5"/></symbol>
+  <symbol id="icon-star" viewBox="0 0 24 24"><polygon points="12 2.5 14.9 9 22 9.5 16.6 14 18.4 21 12 17.2 5.6 21 7.4 14 2 9.5 9.1 9"/></symbol>
+</defs>
+</svg>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="#" class="logo" aria-label="Verde Restaurant — home">
+      <span class="logo-text">
+        <span class="logo-word">Verde<svg class="icon logo-leaf" aria-hidden="true"><use href="#icon-leaf"/></svg></span>
+        <span class="logo-sub">Restaurant</span>
+      </span>
+    </a>
+
+    <nav class="main-nav" aria-label="Primary">
+      <ul>
+        <li><a href="./MainPage.html" >Home</a></li>
+        <li><a href="./Menu/Menu.html">Menu</a></li>
+        <li><a href="#footer">About Us</a></li>
+        <li><a href="./Gallery/Gallery.html">Gallery</a></li>
+        <li><a href="#" class="active">Events</a></li>
+        <li><a href="#footer">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-cta">
+      <a href="#book" class="btn">Reserve a Table</a>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+        <svg class="icon"><use href="#icon-menu"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-nav-backdrop" id="mobile-nav-backdrop"></div>
+<div class="mobile-nav" id="mobile-nav" aria-hidden="true">
+  <div class="mobile-nav-top">
+    <span class="logo-word" style="color:#fff;font-size:22px;">Verde<svg class="icon logo-leaf" aria-hidden="true"><use href="#icon-leaf"/></svg></span>
+    <button class="nav-close" aria-label="Close menu">
+      <svg class="icon"><use href="#icon-close"/></svg>
+    </button>
+  </div>
+  <ul>
+    <li><a href="#" class="active">Home</a></li>
+    <li><a href="#">Menu</a></li>
+    <li><a href="#">About Us</a></li>
+    <li><a href="#">Gallery</a></li>
+    <li><a href="#">Events</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <a href="#book" class="btn btn-block">Reserve a Table</a>
+</div>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero-media" aria-hidden="true">
+      <div class="photo"></div>
+      <div class="tint"></div>
+      <div class="fade"></div>
+    </div>
+
+    <div class="container hero-inner">
+      <div class="hero-content">
+        <span class="eyebrow">Reservation</span>
+        <h1>Save Your Table.<br>We'll Take Care<br>of the Rest.</h1>
+        <p>Whether it's a romantic dinner, a family gathering, or a special celebration — reserve your table and let us create a memorable experience for you.</p>
+        <a href="#book" class="btn">
+          Book a Table
+          <svg class="icon"><use href="#icon-arrow-right"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BOOKING ============ -->
+  <section class="booking" id="book">
+    <div class="container booking-inner">
+
+      <div class="booking-info">
+        <span class="eyebrow">Make a Reservation</span>
+        <h2>Book Your Table</h2>
+        <p>Fill in the details below and we'll confirm your reservation as soon as possible.</p>
+
+        <ul class="feature-list">
+          <li>
+            <span class="icon-circle"><svg class="icon"><use href="#icon-cloche"/></svg></span>
+            <div class="feature-copy">
+              <h3>Great Food</h3>
+              <p>Fresh ingredients, memorable flavors.</p>
+            </div>
+          </li>
+          <li>
+            <span class="icon-circle"><svg class="icon"><use href="#icon-wine"/></svg></span>
+            <div class="feature-copy">
+              <h3>Perfect Ambience</h3>
+              <p>A cozy atmosphere for every occasion.</p>
+            </div>
+          </li>
+          <li>
+            <span class="icon-circle"><svg class="icon"><use href="#icon-heart"/></svg></span>
+            <div class="feature-copy">
+              <h3>Special Moments</h3>
+              <p>We're here for your big and small celebrations.</p>
+            </div>
+          </li>
+        </ul>
+
+        <span class="script-tagline">
+          Good Food. Great Moments.
+          <svg viewBox="0 0 150 14" aria-hidden="true"><path d="M2 8c30-10 110-10 146 2"/></svg>
+        </span>
+      </div>
+
+      <form class="booking-form" data-noop novalidate>
+        <div class="form-row">
+          <div class="field">
+            <label for="date-real">Date</label>
+            <div class="field-control">
+              <svg class="icon field-icon" aria-hidden="true"><use href="#icon-calendar"/></svg>
+              <input type="text" class="field-text" id="date-display" placeholder="Select date" tabindex="-1" aria-hidden="true" readonly>
+              <input type="date" id="date-real" name="date" class="field-hidden" aria-label="Select date">
+              <svg class="icon field-chevron" aria-hidden="true"><use href="#icon-chevron-down"/></svg>
+            </div>
+          </div>
+          <div class="field">
+            <label for="time-real">Time</label>
+            <div class="field-control">
+              <svg class="icon field-icon" aria-hidden="true"><use href="#icon-clock"/></svg>
+              <input type="text" class="field-text" id="time-display" placeholder="Select time" tabindex="-1" aria-hidden="true" readonly>
+              <input type="time" id="time-real" name="time" class="field-hidden" aria-label="Select time">
+              <svg class="icon field-chevron" aria-hidden="true"><use href="#icon-chevron-down"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="guests">Guests</label>
+          <div class="field-control">
+            <svg class="icon field-icon" aria-hidden="true"><use href="#icon-users"/></svg>
+            <select class="field-text" id="guests" name="guests">
+              <option>1 person</option>
+              <option selected>2 people</option>
+              <option>3 people</option>
+              <option>4 people</option>
+              <option>5 people</option>
+              <option>6 people</option>
+              <option>7+ people</option>
+            </select>
+            <svg class="icon field-chevron" aria-hidden="true"><use href="#icon-chevron-down"/></svg>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="name">Name</label>
+          <div class="field-control">
+            <svg class="icon field-icon" aria-hidden="true"><use href="#icon-user"/></svg>
+            <input type="text" class="field-text" id="name" name="name" placeholder="Your name" autocomplete="name" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="phone">Phone Number</label>
+          <div class="field-control">
+            <svg class="icon field-icon" aria-hidden="true"><use href="#icon-phone"/></svg>
+            <input type="tel" class="field-text" id="phone" name="phone" placeholder="Your phone number" autocomplete="tel" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="notes"><svg class="icon" aria-hidden="true"><use href="#icon-message"/></svg> Special Requests <span class="optional">(Optional)</span></label>
+          <div class="field-control align-top">
+            <textarea class="field-text" id="notes" name="notes" placeholder="Any special requests?" rows="3"></textarea>
+          </div>
+        </div>
+
+        <p class="form-note" hidden>Thanks — we'll confirm your reservation by phone shortly.</p>
+
+        <button type="submit" class="btn btn-block">
+          Confirm Reservation
+          <svg class="icon"><use href="#icon-arrow-right"/></svg>
+        </button>
+      </form>
+
+    </div>
+  </section>
+
+  <!-- ============ OCCASION ============ -->
+  <section class="occasion">
+    <div class="occasion-media" aria-hidden="true">
+      <div class="photo"></div>
+      <div class="tint"></div>
+      <div class="fade"></div>
+    </div>
+
+    <div class="container occasion-inner">
+      <div class="occasion-head">
+        <span class="eyebrow">Why Dine With Us</span>
+        <h2>A Place for Every Occasion</h2>
+        <p>From intimate dinners to group celebrations, Verde offers the perfect setting for unforgettable moments.</p>
+      </div>
+
+      <ul class="occasion-features">
+        <li>
+          <span class="icon-circle"><svg class="icon"><use href="#icon-fork-knife"/></svg></span>
+          <h3>Exceptional Cuisine</h3>
+          <p>Prepared with passion and the finest ingredients.</p>
+        </li>
+        <li>
+          <span class="icon-circle"><svg class="icon"><use href="#icon-leaf"/></svg></span>
+          <h3>Elegant Atmosphere</h3>
+          <p>A warm and inviting space for all occasions.</p>
+        </li>
+        <li>
+          <span class="icon-circle"><svg class="icon"><use href="#icon-users"/></svg></span>
+          <h3>Private &amp; Group Dining</h3>
+          <p>Flexible options for small and large parties.</p>
+        </li>
+        <li>
+          <span class="icon-circle"><svg class="icon"><use href="#icon-calendar-check"/></svg></span>
+          <h3>Easy Reservations</h3>
+          <p>Quick and simple booking process.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <span class="logo-word" style="color:#fff;">Verde<svg class="icon logo-leaf" aria-hidden="true"><use href="#icon-leaf"/></svg></span>
+      <p>Good food. Great moments. Unforgettable experiences.</p>
+      <div class="socials">
+        <a href="#" class="social-link" aria-label="Instagram"><svg class="icon"><use href="#icon-instagram"/></svg></a>
+        <a href="#" class="social-link" aria-label="Facebook"><svg class="icon"><use href="#icon-facebook"/></svg></a>
+        <a href="#" class="social-link" aria-label="X (Twitter)"><svg class="icon"><use href="#icon-x"/></svg></a>
+        <a href="#" class="social-link" aria-label="Reviews"><svg class="icon"><use href="#icon-star"/></svg></a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Menu</a></li>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Gallery</a></li>
+        <li><a href="#">Events</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Hours</h4>
+      <ul>
+        <li class="hours-row"><span>Mon – Thu</span><span>11:00 – 23:00</span></li>
+        <li class="hours-row"><span>Fri – Sat</span><span>11:00 – 00:00</span></li>
+        <li class="hours-row"><span>Sunday</span><span>11:00 – 22:00</span></li>
+      </ul>
+    </div>
+
+    <div class="footer-col newsletter">
+      <h4>Newsletter</h4>
+      <p>Subscribe to get special offers and the latest updates.</p>
+      <form data-noop novalidate>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Your email address" aria-label="Email address" required>
+          <button type="submit" aria-label="Subscribe">
+            <svg class="icon"><use href="#icon-arrow-right"/></svg>
+          </button>
+        </div>
+        <p class="form-note" hidden>Thanks for subscribing!</p>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container footer-bottom-inner">
+      <p>© 2024 Verde Restaurant. All Rights Reserved.</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms &amp; Conditions</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var toggle = document.querySelector('.nav-toggle');
+  var closeBtn = document.querySelector('.nav-close');
+  var nav = document.getElementById('mobile-nav');
+  var backdrop = document.getElementById('mobile-nav-backdrop');
+  var navLinks = nav ? nav.querySelectorAll('a') : [];
+
+  function openNav(){
+    nav.classList.add('is-open');
+    backdrop.classList.add('is-open');
+    nav.setAttribute('aria-hidden','false');
+    toggle.setAttribute('aria-expanded','true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeNav(){
+    nav.classList.remove('is-open');
+    backdrop.classList.remove('is-open');
+    nav.setAttribute('aria-hidden','true');
+    toggle.setAttribute('aria-expanded','false');
+    document.body.style.overflow = '';
+  }
+  if(toggle) toggle.addEventListener('click', openNav);
+  if(closeBtn) closeBtn.addEventListener('click', closeNav);
+  if(backdrop) backdrop.addEventListener('click', closeNav);
+  navLinks.forEach(function(a){ a.addEventListener('click', closeNav); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeNav(); });
+
+  function wireField(displayId, realId, formatter){
+    var display = document.getElementById(displayId);
+    var real = document.getElementById(realId);
+    if(!display || !real) return;
+    real.addEventListener('change', function(){
+      var wrap = real.closest('.field-control');
+      if(real.value){
+        display.value = formatter(real.value);
+        if(wrap) wrap.classList.add('is-filled');
+      } else {
+        display.value = '';
+        if(wrap) wrap.classList.remove('is-filled');
+      }
+    });
+  }
+  wireField('date-display','date-real', function(v){
+    var d = new Date(v + 'T00:00:00');
+    return d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+  });
+  wireField('time-display','time-real', function(v){
+    var parts = v.split(':').map(Number);
+    var h = parts[0], m = parts[1];
+    var period = h >= 12 ? 'PM' : 'AM';
+    var hh = ((h + 11) % 12) + 1;
+    return hh + ':' + String(m).padStart(2,'0') + ' ' + period;
+  });
+
+  document.querySelectorAll('form[data-noop]').forEach(function(form){
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var note = form.querySelector('.form-note');
+      if(note) note.hidden = false;
+      form.reset();
+      document.querySelectorAll('#date-display,#time-display').forEach(function(el){ el.value=''; });
+      document.querySelectorAll('.field-control.is-filled').forEach(function(el){ el.classList.remove('is-filled'); });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
